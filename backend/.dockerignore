@@ -1,0 +1,24 @@
+# Git
+.git
+.gitignore
+
+# Docker
+.dockerignore
+docker-compose.yml
+
+# Laravel
+/vendor
+/node_modules
+.env
+/storage/logs
+/storage/framework/sessions/*
+/storage/framework/cache/data/*
+/storage/framework/views/*
+/public/hot
+/public/storage
+
+# IDEs and editors
+.idea
+.vscode
+.fleet
+.zed

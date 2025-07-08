@@ -1,0 +1,20 @@
+# Ignore all node_modules
+node_modules
+
+# Ignore build output directories
+dist
+build
+
+# Ignore development and version control files
+.git
+.gitignore
+.dockerignore
+README.md
+
+# Ignore environment variable files
+.env
+.env.*
+
+# Ignore logs
+npm-debug.log*
+yarn-debug.log*

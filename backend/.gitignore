@@ -1,0 +1,32 @@
+# General
+*.log
+.DS_Store
+Thumbs.db
+
+# Laravel specific
+
+/public/storage
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/framework/cache/data/*
+/storage/*.key
+/storage/pail
+/vendor
+.env
+.env.backup
+.env.production
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.phpactor.json
+/.fleet
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+/auth.json

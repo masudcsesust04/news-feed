@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:13
+    container_name: news_feed_db
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-news_feed}
+      POSTGRES_USER: ${DB_USERNAME:-user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+    volumes:
+      - news_feed_db_data:/var/lib/postgresql/data
+    networks:
+      - news_feed_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: news_feed_backend
+    restart: always
+    working_dir: /var/www/html
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - news_feed_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: news_feed_frontend
+    restart: always
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    networks:
+      - news_feed_network
+
+  nginx:
+    image: nginx:latest
+    container_name: news_feed_nginx
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - news_feed_network
+
+networks:
+  news_feed_network:
+    driver: bridge
+
+volumes:
+  news_feed_db_data:

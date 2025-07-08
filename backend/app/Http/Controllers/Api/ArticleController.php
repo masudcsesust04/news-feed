@@ -35,6 +35,8 @@ class ArticleController extends Controller
 
         // TODO: Add search article by title or keywords
 
+        // TODO: Update the user's articles page to reflect their preference settings as expected.
+
         $articles = $query->paginate(15);
 
         return ArticleResource::collection($articles);

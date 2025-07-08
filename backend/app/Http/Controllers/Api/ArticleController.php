@@ -33,15 +33,15 @@ class ArticleController extends Controller
             $query->whereDate('published_at', $request->input('published_at'));
         }
 
+        // TODO: Add search article by title or keywords
+
         $articles = $query->paginate(15);
 
         return ArticleResource::collection($articles);
     }
 
-    public function show($id)
+    public function show(Article $article)
     {
-        // Logic to fetch and return a single article by ID
-        // Example: return Article::findOrFail($id);
-        return response()->json(['message' => 'Article details for ID: ' . $id]);
+        return new ArticleResource($article);
     }
 }

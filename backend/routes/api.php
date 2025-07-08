@@ -11,7 +11,11 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::apiResource('articles', ArticleController::class);
+
+    // Note: Considering API's for admin users i am using resource based routes. 
+    // It can be more specific instead of resource routes if needed
+    Route::apiResource('articles', ArticleController::class); 
+
     Route::get('/users/profile', [UserController::class, 'show']);
     Route::patch('/users/profile', [UserController::class, 'update']);
     Route::patch('/users/settings', [UserController::class, 'settings']);

@@ -43,12 +43,19 @@ Before you begin, ensure you have the following installed on your system:
     ```bash
     php artisan key:generate
     ```
+
 5.  **Database Setup:**
     Ensure the database specified in your `.env` file (e.g., `news-feed`) is created in your database management system. Then, run the migrations:
     ```bash
     php artisan migrate
     ```
-6.  **Start the Development Server:**
+6.  **Seed the Database (Optional):**
+    Seeders to populate database with initial data, run:
+    ```bash
+    php artisan db:seed
+    ```
+
+7.  **Start the Development Server:**
     ```bash
     php artisan serve
     ```

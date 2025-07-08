@@ -6,51 +6,52 @@ This is the backend API for a news feed application, built with Laravel.
 
 This application provides a set of APIs for a news feed application. It allows users to register, login, and manage their profile and settings. It also provides APIs for managing articles. Additionally, it includes a scheduled task to periodically fetch news articles from various external sources.
 
-## Prerequisites
+## Getting Started
 
-- Laravel 12 application
-- PHP 8.1 or higher
-- Composer installed
-- News API keys configured in .env file
+### Prerequisites
 
-## Testing the Scheduler
-## Step 1: Test Individual Commands
-```bash
-# Test each command individually first
-php artisan fetch:news newsapi
-php artisan fetch:news opennws
-php artisan fetch:news newscred
-```
+Before you begin, ensure you have the following installed on your system:
 
-### List All Scheduled Tasks
-```bash
-# See all your scheduled tasks
-php artisan schedule:list
-```
+*   **PHP**: Version 8.2 or higher.
+*   **Composer**: For PHP dependency management.
+*   **A Database System**: PostgreSQL
+*   **News API Keys**: Obtain API keys for NewsAPI, OpenNews, and NewsCred.
 
-### Run Scheduler Once (Manual Test)
-```bash
-# This runs the scheduler once and executes any due tasks
-php artisan schedule:run
-```
+### Installation
 
-## 2. Development/Testing Commands
-### Run Scheduler Continuously (Development)
-```bash
-# This runs the scheduler every minute continuously (great for development)
-php artisan schedule:work
-```
-
-## 3. Production Setup
-### Add Cron Entry (Production)
-For production, add this single cron entry to your server:
-```bash
-# Edit crontab
-crontab -e
-
-# Add this line (replace /path/to/your/project with actual path)
-* * * * * cd /path/to/your/project && php artisan schedule:run >> /dev/null 2>&1
-```
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/masudcsesust04/news-feed.git
+    cd news-feed/backend
+    ```
+2.  **Install PHP Dependencies:**
+    ```bash
+    composer install
+    ```
+3.  **Environment Configuration:**
+    Create a copy of the `.env.example` file and name it `.env`:
+    ```bash
+    cp .env.example .env
+    ```
+    Open the newly created `.env` file and configure your database connection details (DB_DATABASE, DB_USERNAME, DB_PASSWORD, etc.). Also, add your API keys for the news services:
+    ```dotenv
+    NEWSAPI_KEY=your_newsapi_key_here
+    OPENNWS_KEY=your_opennws_key_here
+    NEWSCRED_KEY=your_newscred_key_here
+    ```
+4.  **Generate Application Key:**
+    ```bash
+    php artisan key:generate
+    ```
+5.  **Database Setup:**
+    Ensure the database specified in your `.env` file (e.g., `news-feed`) is created in your database management system. Then, run the migrations:
+    ```bash
+    php artisan migrate
+    ```
+6.  **Start the Development Server:**
+    ```bash
+    php artisan serve
+    ```
 
 ## API Endpoints
 
@@ -74,32 +75,53 @@ crontab -e
 -   `PATCH /api/users/profile`: Update the authenticated user's profile.
 -   `PATCH /api/users/settings`: Update the authenticated user's settings.
 
-## Setup Instructions
+## Development & Testing
 
-1.  **Clone the repository:**
+### Running Tests
+
+To run the feature tests for the API endpoints:
+
+```bash
+php artisan test --testsuite=Feature
+```
+
+### Scheduler Management
+
+To manage and test the scheduled news fetching tasks:
+
+*   **Test each command individually (if want)**
     ```bash
-    git clone https://github.com/your-username/news-feed-app.git
+    php artisan fetch:news newsapi
+    php artisan fetch:news opennws
+    php artisan fetch:news newscred
     ```
-2.  **Install dependencies:**
+    
+*   **List All Scheduled Tasks:**
     ```bash
-    composer install
+    php artisan schedule:list
     ```
-3.  **Create a copy of the `.env.example` file and name it `.env`:**
+*   **Run Scheduler Once (Manual Test):**
+    This runs the scheduler once and executes any due tasks.
     ```bash
-    cp .env.example .env
+    php artisan schedule:run
     ```
-4.  **Generate an application key:**
+*   **Run Scheduler Continuously (Development):**
+    This runs the scheduler every minute continuously (great for development).
     ```bash
-    php artisan key:generate
+    php artisan schedule:work
     ```
-5.  **Run the database migrations:**
-    ```bash
-    php artisan migrate
-    ```
-6.  **Start the development server:**
-    ```bash
-    php artisan serve
-    ```
+
+### Production Setup
+
+For production, add this single cron entry to your server:
+
+```bash
+# Edit crontab
+crontab -e
+
+# Add this line (replace /path/to/your/project with actual path)
+* * * * * cd /path/to/your/project && php artisan schedule:run >> /dev/null 2>&1
+```
 
 ## Dockerization
 
@@ -107,12 +129,10 @@ To build and run the application using Docker, follow these steps:
 
 1.  **Build the Docker image:**
     ```bash
-    docker build -t news-feed-app .
+    docker build -t news-feed-backend .
     ```
 2.  **Run the Docker container:**
     ```bash
-    docker run -p 8000:8000 news-feed-app
+    docker run -p 8000:8000 news-feed-backend
     ```
     Note: The Docker container will also run the Laravel scheduler via cron to fetch news articles periodically.
-    ```
-

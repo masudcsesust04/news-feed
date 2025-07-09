@@ -31,12 +31,13 @@ const Articles: React.FC = () => {
   const [filterSource, setFilterSource] = useState('');
   const [filterAuthor, setFilterAuthor] = useState('');
   const [filterTitle, setFilterTitle] = useState('');
+  const [filterPublishedAt, setFilterPublishedAt] = useState('');
 
   // Dropdown options states
   const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   const [availableSources, setAvailableSources] = useState<string[]>([]);
 
-  const fetchArticles = async (page: number, filters?: { category?: string, source?: string, author?: string, title?: string }) => {
+  const fetchArticles = async (page: number, filters?: { category?: string, source?: string, author?: string, title?: string, published_at?: string }) => {
     setLoading(true);
     setError(null);
     try {
@@ -45,6 +46,7 @@ const Articles: React.FC = () => {
       if (filters?.source) url += `&source=${filters.source}`;
       if (filters?.author) url += `&author=${filters.author}`;
       if (filters?.title) url += `&title=${filters.title}`;
+      if (filters?.published_at) url += `&published_at=${filters.published_at}`;
 
       const response = await axiosInstance.get(url);
       setArticles(response.data.data);
@@ -71,12 +73,12 @@ const Articles: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchArticles(1, { category: filterCategory, source: filterSource, author: filterAuthor, title: filterTitle });
+    fetchArticles(1, { category: filterCategory, source: filterSource, author: filterAuthor, title: filterTitle, published_at: filterPublishedAt });
   }, [filterCategory, filterSource]);
 
   const handleApplyFilters = (e: React.FormEvent) => {
     e.preventDefault();
-    fetchArticles(1, { category: filterCategory, source: filterSource, author: filterAuthor, title: filterTitle });
+    fetchArticles(1, { category: filterCategory, source: filterSource, author: filterAuthor, title: filterTitle, published_at: filterPublishedAt });
   };
 
   const handleResetFilters = () => {
@@ -84,6 +86,7 @@ const Articles: React.FC = () => {
     setFilterSource('');
     setFilterAuthor('');
     setFilterTitle('');
+    setFilterPublishedAt('');
     // useEffect will trigger fetchArticles(1) with empty filters
   };
 
@@ -151,6 +154,16 @@ const Articles: React.FC = () => {
                 className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
               />
             </div>
+            <div>
+              <input
+                type="date"
+                id="filterPublishedAt"
+                value={filterPublishedAt}
+                onChange={(e) => setFilterPublishedAt(e.target.value)}
+                placeholder="Published Date (YYYY-MM-DD)"
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+              />
+            </div>
           </div>
           <div className="flex justify-start space-x-2">
             <button
@@ -206,7 +219,7 @@ const Articles: React.FC = () => {
                   if (link.url) {
                     const url = new URL(link.url);
                     const page = parseInt(url.searchParams.get('page') || '1');
-                    fetchArticles(page, { category: filterCategory, source: filterSource, author: filterAuthor, title: filterTitle });
+                    fetchArticles(page, { category: filterCategory, source: filterSource, author: filterAuthor, title: filterTitle, published_at: filterPublishedAt });
                   }
                 }}
                 disabled={!link.url}

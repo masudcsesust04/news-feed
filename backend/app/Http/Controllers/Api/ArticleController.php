@@ -33,7 +33,10 @@ class ArticleController extends Controller
             $query->whereDate('published_at', $request->input('published_at'));
         }
 
-        // TODO: Add search article by title or keywords
+        // Add search article by title
+        if ($request->has('title')) {
+            $query->where('title', 'LIKE', '%' . $request->input('title') . '%');
+        }
 
         // TODO: Update the user's articles page to reflect their preference settings as expected.
 
